@@ -7,6 +7,9 @@ import {
   UpdateTaskSchema,
 } from "./task-service";
 
+const SuccessSchema = t.Object({ success: t.Literal(true) });
+const SUCCESS: typeof SuccessSchema.static = { success: true };
+
 const app = new Elysia({ adapter: node() })
   .get("/", () => "Hello, world!")
   .get(
@@ -32,7 +35,7 @@ const app = new Elysia({ adapter: node() })
     "/tasks/:id",
     ({ body, params: { id } }) => {
       taskService.updateTask(id, body);
-      return { success: true };
+      return SUCCESS;
     },
     {
       body: UpdateTaskSchema,
@@ -43,9 +46,11 @@ const app = new Elysia({ adapter: node() })
     "/tasks/:id",
     ({ params: { id } }) => {
       taskService.deleteTask(id);
+      return SUCCESS;
     },
     {
       params: t.Object({ id: t.String() }),
+      response: SuccessSchema,
     }
   )
   .listen(3001, ({ hostname, port }) => {

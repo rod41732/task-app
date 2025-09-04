@@ -5,3 +5,5 @@ import { edenFetch } from "@elysiajs/eden";
 export const apiClient = edenFetch<BackendApp>(
   "http://localhost:3000/api/backend"
 );
+
+export const wrappedClient: typeof apiClient = (...args) => apiClient(...args);
