@@ -5,6 +5,10 @@ export const updateTaskCompletion = async (id: string, completed: boolean) => {
     method: "PUT",
     params: { id },
     body: { completed },
+  }).then((res) => {
+    if (res.error) {
+      throw res.error;
+    }
   });
 };
 
@@ -12,6 +16,10 @@ export const deleteTask = async (id: string) => {
   return await apiClient("/tasks/:id", {
     method: "DELETE",
     params: { id },
+  }).then((res) => {
+    if (res.error) {
+      throw res.error;
+    }
   });
 };
 
@@ -20,6 +28,10 @@ export const updateTaskTitle = async (id: string, title: string) => {
     method: "PUT",
     params: { id },
     body: { title },
+  }).then((res) => {
+    if (res.error) {
+      throw res.error;
+    }
   });
 };
 
@@ -30,5 +42,9 @@ export const createTask = async (title: string) => {
       title,
       completed: false,
     },
+  }).then((res) => {
+    if (res.error) {
+      throw res.error;
+    }
   });
 };

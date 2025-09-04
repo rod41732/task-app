@@ -1,12 +1,11 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
 import { apiClient } from "./utils/api-client";
 // import { Task } from "@/backend/task-service";
 import type { Task } from "@/backend/task-service";
-import { Plus } from "lucide-react";
-import { Button } from "./components/button";
+import { Loader2 } from "lucide-react";
+
+import { TaskForm } from "./components/TaskForm";
 import { TaskList } from "./components/TaskList";
-import { createTask } from "./utils/api-calls";
 import { useLoadingHandler } from "./utils/useLoadingHandler";
 
 async function fetchTasks(): Promise<Task[]> {
@@ -20,54 +19,28 @@ async function fetchTasks(): Promise<Task[]> {
 }
 
 export default function Home() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const { state, data, error } = useLoadingHandler({
+  const { state, data, error, invalidate } = useLoadingHandler({
     fetcher: fetchTasks,
     depsArray: [],
   });
 
-  const reloadTask = useCallback(() => {
-    fetchTasks().then((res) => {
-      console.debug("set task to", res);
-      setTasks(res);
-    });
-  }, []);
-
-  useEffect(() => {
-    reloadTask();
-  }, [reloadTask]);
-
   return (
-    <div className="p-2">
-      <h1>Tasks</h1>
+    <div className="p-4 w-full  h-screen flex flex-col">
+      <h1 className="text-xl font-bold">Tasks</h1>
 
-      <TaskForm reloadTask={reloadTask} />
+      <TaskForm reloadTask={invalidate} />
 
-      <TaskList tasks={tasks} reloadTask={reloadTask} />
-    </div>
-  );
-}
+      {data != null && <TaskList tasks={data} reloadTask={invalidate} />}
 
-export function TaskForm({ reloadTask }: { reloadTask: () => void }) {
-  const [newTaskTitle, setNewTaskTitle] = useState("");
-  return (
-    <div className="border border-gray-800 rounded-md my-2 p-2 flex items-center gap-x-2">
-      <input
-        className="bg-gray-700 rounded-md p-2  w-full"
-        value={newTaskTitle}
-        onChange={(e) => setNewTaskTitle(e.target.value)}
-        placeholder="New task title"
-      />
-      <Button
-        variant="primary"
-        onClick={async () => {
-          await createTask(newTaskTitle);
-          reloadTask();
-        }}
-        icon={<Plus />}
-      >
-        <div>Create</div>
-      </Button>
+      {data == null && (
+        <div className="flex flex-col flex-1 items-center justify-center w-full ">
+          {state == "loading" ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <p className="text-red-500"> Error: {error?.message}</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -14,7 +14,7 @@ const app = new Elysia({ adapter: node() })
   .get("/", () => "Hello, world!")
   .get(
     "/tasks",
-    () => {
+    async () => {
       return taskService.listAllTasks();
     },
     {
@@ -23,7 +23,7 @@ const app = new Elysia({ adapter: node() })
   )
   .post(
     "/tasks",
-    ({ body }) => {
+    async ({ body }) => {
       return taskService.createTask(body);
     },
     {
@@ -33,8 +33,8 @@ const app = new Elysia({ adapter: node() })
   )
   .put(
     "/tasks/:id",
-    ({ body, params: { id } }) => {
-      taskService.updateTask(id, body);
+    async ({ body, params: { id } }) => {
+      await taskService.updateTask(id, body);
       return SUCCESS;
     },
     {
@@ -44,8 +44,8 @@ const app = new Elysia({ adapter: node() })
   )
   .delete(
     "/tasks/:id",
-    ({ params: { id } }) => {
-      taskService.deleteTask(id);
+    async ({ params: { id } }) => {
+      await taskService.deleteTask(id);
       return SUCCESS;
     },
     {
