@@ -2,13 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:3001";
 
+// handle for passing throught request to backend, avoiding CORS
 async function passthrough(req: NextRequest) {
   if (!req.url) {
     return;
   }
   const url = new URL(req.url);
-  const path = url.pathname.replace(/^\/api\/backend\//, "/"); // remove /api/backend part
-  const query = url.search; // will be e.g. '', '?a=1'
+  // remove /api/backend part
+  const path = url.pathname.replace(/^\/api\/backend\//, "/");
+  const query = url.search;
 
   const backendUrl = `${BACKEND_URL}${path}${query}`;
   console.log("Will fetch", backendUrl);

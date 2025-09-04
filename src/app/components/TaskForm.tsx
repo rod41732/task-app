@@ -4,6 +4,7 @@ import { createTask } from "../utils/api-calls";
 import { handleError } from "../utils/handle-error";
 import { Button } from "./button";
 
+/** Task form is used for creating task */
 export function TaskForm({ reloadTask }: { reloadTask: () => void }) {
   const [newTaskTitle, setNewTaskTitle] = useState("");
   return (
@@ -16,12 +17,13 @@ export function TaskForm({ reloadTask }: { reloadTask: () => void }) {
       />
       <Button
         variant="primary"
+        disabled={!newTaskTitle.trim()}
         onClick={async () => {
           try {
-            await createTask(newTaskTitle);
+            await createTask(newTaskTitle.trim());
             reloadTask();
           } catch (err) {
-            handleError(err);
+            handleError(err, (msg) => `Failed to create task: ${msg}`);
           }
         }}
         icon={<Plus />}

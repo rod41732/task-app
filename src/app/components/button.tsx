@@ -30,6 +30,7 @@ type ButtonProps = Omit<_ButtonProps, "onClick"> & {
   icon: ReactNode;
 };
 
+/** Button: handle async onClick action by disabling itself and replacing icon with spinner */
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, onClick, children, icon, ...props }, ref) => {
     const [isLoading, setLoading] = useState(false);

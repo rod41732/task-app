@@ -1,4 +1,8 @@
-export function handleError(err: unknown) {
+export function handleError(
+  err: unknown,
+  errMessageBuilder: (msg: string) => string
+) {
   const errorMessage = err instanceof Error ? err.message : "Unknown Error";
-  alert("Error: " + errorMessage);
+  console.error("Error", err);
+  alert(errMessageBuilder(errorMessage));
 }

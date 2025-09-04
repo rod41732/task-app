@@ -14,6 +14,9 @@ export function TaskList({
       {tasks.map((it) => {
         return <TaskItem key={it.id} task={it} reloadTask={reloadTask} />;
       })}
+      {tasks.length == 0 && (
+        <div className="text-center text-gray-600">No tasks</div>
+      )}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import {
   updateTaskCompletion,
   updateTaskTitle,
 } from "../utils/api-calls";
+import { handleError } from "../utils/handle-error";
 import { Button } from "./button";
 
 export function TaskItem({
@@ -38,6 +39,11 @@ export function TaskItem({
           try {
             await updateTaskCompletion(task.id, !task.completed);
             reloadTask();
+          } catch (err) {
+            handleError(
+              err,
+              (msg) => `Failed to update task completion: ${msg}`
+            );
           } finally {
             setToggling(false);
           }
@@ -65,9 +71,12 @@ export function TaskItem({
           <Button
             variant="primary"
             onClick={async () => {
-              await updateTaskTitle(task.id, localText);
               try {
-                await reloadTask();
+                await updateTaskTitle(task.id, localText);
+                // intentionally not await this to prevent reload error being misleadingly treated as update error
+                reloadTask();
+              } catch (err) {
+                handleError(err, (msg) => `Failed to update title: ${msg}`);
               } finally {
                 setEditing(false);
               }
@@ -85,12 +94,16 @@ export function TaskItem({
           to make save button more prominent */}
           <Button
             variant="destructive"
-            // prevent race
             disabled={isToggling}
             onClick={async () => {
               if (window.confirm(`Delete task: '${task.title}'?`)) {
-                await deleteTask(task.id);
-                await reloadTask();
+                try {
+                  await deleteTask(task.id);
+                  reloadTask();
+                } catch (err) {
+                  handleError(err, (msg) => `Failed to update title: ${msg}`);
+                } finally {
+                }
               }
             }}
             icon={<Trash />}

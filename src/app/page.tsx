@@ -30,6 +30,7 @@ export default function Home() {
 
       <TaskForm reloadTask={invalidate} />
 
+      {/* note that it's possible to have loading state, but data present */}
       {data != null && <TaskList tasks={data} reloadTask={invalidate} />}
 
       {data == null && (
