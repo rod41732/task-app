@@ -7,7 +7,8 @@ export const updateTaskCompletion = async (id: string, completed: boolean) => {
     body: { completed },
   }).then((res) => {
     if (res.error) {
-      throw res.error;
+      // @ts-expect-error: Elysia seems to return error message in error.value.error, but the error.message is [object Object] for some reason
+      throw new Error(res.error.value?.error ?? "Unknown error");
     }
   });
 };
@@ -18,7 +19,8 @@ export const deleteTask = async (id: string) => {
     params: { id },
   }).then((res) => {
     if (res.error) {
-      throw res.error;
+      // @ts-expect-error: Elysia seems to return error message in error.value.error, but the error.message is [object Object] for some reason
+      throw new Error(res.error.value?.error ?? "Unknown error");
     }
   });
 };
@@ -30,7 +32,8 @@ export const updateTaskTitle = async (id: string, title: string) => {
     body: { title },
   }).then((res) => {
     if (res.error) {
-      throw res.error;
+      // @ts-expect-error: Elysia seems to return error message in error.value.error, but the error.message is [object Object] for some reason
+      throw new Error(res.error.value?.error ?? "Unknown error");
     }
   });
 };
@@ -44,7 +47,8 @@ export const createTask = async (title: string) => {
     },
   }).then((res) => {
     if (res.error) {
-      throw res.error;
+      // @ts-expect-error: Elysia seems to return error message in error.value.error, but the error.message is [object Object] for some reason
+      throw new Error(res.error.value?.error ?? "Unknown error");
     }
   });
 };

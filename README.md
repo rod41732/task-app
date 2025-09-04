@@ -3,10 +3,14 @@
 ## Stack
 
 - Frontend: Next.js, TailwindCSS
-- Backend: Elysia
+- Backend: [Elysia](https://elysiajs.com/) for end-to-end type safety
 - Testing: Vite + Vitest
 
 DB is in-memory
+
+## Setup
+
+- `npm install` to install dependency
 
 ## Runing
 
