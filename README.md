@@ -10,7 +10,7 @@ DB is in-memory
 
 ## Setup
 
-- `npm install` to install dependency
+- `npm install` to install dependencies
 
 ## Runing
 
@@ -23,4 +23,7 @@ DB is in-memory
 - Task CRUD API (list, create, delete, toggle, update title)
 - Frontend: React (Next.js/Tailwind CSS),
   - Typesafety with Typescrpit and Elysia's EdenFetch
+  - Error handling when action fail (using alert())
+  - Error handling when list loading failed (try blocking `/tasks` in DevTools)
 - Loading Status (loading task list and action)
+- Unitesting: backend logic unittesting with Vitest

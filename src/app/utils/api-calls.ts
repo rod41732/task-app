@@ -1,5 +1,12 @@
 import { apiClient } from "./api-client";
 
+// Elysia seems to return error message in error.value.error, but the error.message is [object Object] for some reason
+// need this special treatment
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getErrorMessage(error: any) {
+  return error.value?.error ?? error.message;
+}
+
 export const updateTaskCompletion = async (id: string, completed: boolean) => {
   return await apiClient("/tasks/:id", {
     method: "PUT",
@@ -7,8 +14,7 @@ export const updateTaskCompletion = async (id: string, completed: boolean) => {
     body: { completed },
   }).then((res) => {
     if (res.error) {
-      // @ts-expect-error: Elysia seems to return error message in error.value.error, but the error.message is [object Object] for some reason
-      throw new Error(res.error.value?.error ?? "Unknown error");
+      throw new Error(getErrorMessage(res.error));
     }
   });
 };
@@ -19,8 +25,7 @@ export const deleteTask = async (id: string) => {
     params: { id },
   }).then((res) => {
     if (res.error) {
-      // @ts-expect-error: Elysia seems to return error message in error.value.error, but the error.message is [object Object] for some reason
-      throw new Error(res.error.value?.error ?? "Unknown error");
+      throw new Error(getErrorMessage(res.error));
     }
   });
 };
@@ -32,8 +37,7 @@ export const updateTaskTitle = async (id: string, title: string) => {
     body: { title },
   }).then((res) => {
     if (res.error) {
-      // @ts-expect-error: Elysia seems to return error message in error.value.error, but the error.message is [object Object] for some reason
-      throw new Error(res.error.value?.error ?? "Unknown error");
+      throw new Error(getErrorMessage(res.error));
     }
   });
 };
@@ -47,8 +51,7 @@ export const createTask = async (title: string) => {
     },
   }).then((res) => {
     if (res.error) {
-      // @ts-expect-error: Elysia seems to return error message in error.value.error, but the error.message is [object Object] for some reason
-      throw new Error(res.error.value?.error ?? "Unknown error");
+      throw new Error(getErrorMessage(res.error));
     }
   });
 };
