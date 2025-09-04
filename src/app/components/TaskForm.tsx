@@ -17,10 +17,12 @@ export function TaskForm({ reloadTask }: { reloadTask: () => void }) {
       />
       <Button
         variant="primary"
+        // prevent creating task with empty title
         disabled={!newTaskTitle.trim()}
         onClick={async () => {
           try {
             await createTask(newTaskTitle.trim());
+            setNewTaskTitle("");
             reloadTask();
           } catch (err) {
             handleError(err, (msg) => `Failed to create task: ${msg}`);
