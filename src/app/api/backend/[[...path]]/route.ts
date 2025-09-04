@@ -13,7 +13,6 @@ async function passthrough(req: NextRequest) {
   const query = url.search;
 
   const backendUrl = `${BACKEND_URL}${path}${query}`;
-  console.log("Will fetch", backendUrl);
 
   const extraParam =
     typeof req.body?.getReader === "function" ? { duplex: "half" } : {};

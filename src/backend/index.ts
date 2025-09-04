@@ -54,7 +54,7 @@ const app = new Elysia({ adapter: node() })
     }
   )
   .listen(3001, ({ hostname, port }) => {
-    console.log(`Backend is listending on ${hostname}:${port}`);
+    console.log(`Backend is listening on ${hostname}:${port}`);
   });
 
 export type BackendApp = typeof app;
